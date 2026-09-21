@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>dx</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="dx.js"></script>
+
+    <script>
+
+    function roll(str) {
+      let d = new Dice(str)
+      let result = d.roll()
+      
+      document.getElementById('result').innerHTML =
+        `${str}: ${result}\n`+ document.getElementById('result').innerHTML
+    }
+    
+    </script>
+
+    
+  </head>
+  <body>
+    <div id="intro">
+      <h1>Dx</h1>
+    <p>
+        string: <input type="text" id="string" value="2d6"/>
+        <input type="button" value="roll" onclick="roll(document.getElementById('string').value)"/>
+    </p>
+    <p>
+        minimal value: <input type="text" value="1"/> 
+        maximum value: <input type="text" value="6"/> 
+        <input type="button" value="roll"/>
+    </p>
+    <p>
+        <input type="button" value="roll d6" onclick="roll('d6')"/>
+        <input type="button" value="roll 2d6" onclick="roll('2d6')"/>
+    </p>
+    </div>
+
+    <div>
+      <hr/>
+    <pre id="result">
+</pre>
+    </div>
+
+
+    <div style="color: lightgray">
+    <hr/>
+    dx - from <a href="https://berta.hu">berta.hu</a> - 2019
+    </div>
+
+    <script>roll('d6')</script>
+    
+  </body>
+</html>
