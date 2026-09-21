@@ -2,7 +2,7 @@ class Dice {
 
   static options = {
     log_data: true,
-    log_parsing: true,
+    log_parsing: false,
     log_rolls: true,
   }
   
@@ -19,7 +19,7 @@ class Dice {
   // parses a string to identify a dice roll
   // example "foo +2d6-2 bar" returns 
   parse(s) { 
-    let m = s.match(/([+-]?)(\d*)[dDkK](\d+)([+-]?\d*)(.*$)/)
+    let m = s.match(/([+-]?)(\d*)[dDkK](\d+)([+-]?\d+|)(.*$)/)
     if(m) {
       let t = {}
       t.prefix = (m[1]!='-' ? 1 : -1)
