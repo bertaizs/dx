@@ -13,7 +13,12 @@
       let result = d.roll()
       
       document.getElementById('result').innerHTML =
-        `${str}: ${result}\n`+ document.getElementById('result').innerHTML
+        `<div>${str}: ${result}`
+        +(document.getElementById('show_rolls').checked ? " ("+d.rolls.join(", ")+")" : "")
+        +`</div>`
+        + document.getElementById('result').innerHTML
+
+      return result
     }
     
     </script>
@@ -36,12 +41,14 @@
         <input type="button" value="roll d6" onclick="roll('d6')"/>
         <input type="button" value="roll 2d6" onclick="roll('2d6')"/>
     </p>
+    <p>
+        <input type="checkbox" id="show_rolls"/> show rolls
+    </p>
     </div>
 
     <div>
       <hr/>
-    <pre id="result">
-</pre>
+      <div id="result"></div>
     </div>
 
 
