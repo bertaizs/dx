@@ -33,13 +33,20 @@
         <input type="button" value="roll" onclick="roll(document.getElementById('string').value)"/>
     </p>
     <p>
-        minimal value: <input type="text" value="1"/> 
-        maximum value: <input type="text" value="6"/> 
-        <input type="button" value="roll"/>
+        minimal value: <input type="text" id="min" value="1"/> 
+        maximum value: <input type="text" id="max" value="6"/> 
+        <input type="button" value="roll" onclick="roll('d'+(document.getElementById('max').value-document.getElementById('min').value+1)+'+'+(document.getElementById('min').value-1))"/>
     </p>
     <p>
+        <input type="button" value="roll d4" onclick="roll('d4')"/>
         <input type="button" value="roll d6" onclick="roll('d6')"/>
         <input type="button" value="roll 2d6" onclick="roll('2d6')"/>
+        <input type="button" value="roll 3d6" onclick="roll('3d6')"/>
+        <input type="button" value="roll d8" onclick="roll('d8')"/>
+        <input type="button" value="roll d10" onclick="roll('d10')"/>
+        <input type="button" value="roll d12" onclick="roll('d12')"/>
+        <input type="button" value="roll d20" onclick="roll('d20')"/>
+        <input type="button" value="roll d100" onclick="roll('d100')"/>
     </p>
     <p>
         <input type="checkbox" id="show_rolls"/> show rolls
