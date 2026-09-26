@@ -17,8 +17,16 @@
         +(document.getElementById('show_rolls').checked ? " ("+d.rolls.join(", ")+")" : "")
         +`</div>`
         + document.getElementById('result').innerHTML
-
       return result
+    }
+
+    function roll_button(dn) {
+      if( typeof dn == 'number')
+        dn = "d"+dn
+      let s = `<input type="button" value="roll ${dn}" onclick="roll('${dn}')"/>`
+      s+= ` `
+      document.write(s)
+      return s
     }
     
     </script>
@@ -29,8 +37,16 @@
     <div id="intro">
       <h1>dx</h1>
     <p>
+        This tool is a random number generator for simulating dice (dx) rolls. 
+        Handy if you went to a DnD session but left your favorite dice at home.
+        You have different way for telling how many dice and what kind of dice you would like to roll:
+        you can specify it as a string (e.g. 3d6+2 means rolling three six-sided dice and adding two to the result),
+        but you can also set a minimum and a maximum value, or just click one of the roll buttons.
+    </p>
+    <p>
         string: <input type="text" id="string" value="2d6"/>
         <input type="button" value="roll" onclick="roll(document.getElementById('string').value)"/>
+        <span onclick="alert(1)">❔</span>
     </p>
     <p>
         minimum value: <input type="number" id="min" min="0" max="999" value="1" size="3" maxlength="3"/> 
@@ -38,18 +54,15 @@
         <input type="button" value="roll" onclick="roll('d'+(document.getElementById('max').value-document.getElementById('min').value+1)+'+'+(document.getElementById('min').value-1))"/>
     </p>
     <p>
-        <input type="button" value="roll d4" onclick="roll('d4')"/>
-        <input type="button" value="roll d6" onclick="roll('d6')"/>
-        <input type="button" value="roll 2d6" onclick="roll('2d6')"/>
-        <input type="button" value="roll 3d6" onclick="roll('3d6')"/>
-        <input type="button" value="roll d8" onclick="roll('d8')"/>
-        <input type="button" value="roll d10" onclick="roll('d10')"/>
-        <input type="button" value="roll d12" onclick="roll('d12')"/>
-        <input type="button" value="roll d20" onclick="roll('d20')"/>
-        <input type="button" value="roll d100" onclick="roll('d100')"/>
+        <script>
+          let buttons = [2, 3, 4, 6, '2d6', '3d6', 8, 10, 12, 20, 100]
+          for( let i in buttons )
+            roll_button(buttons[i])
+        </script>
     </p>
     <p>
         <input type="checkbox" id="show_rolls"/> show rolls
+        <input type="button" value="clear output" onclick="document.getElementById(result).innerHTML = ''"
     </p>
     </div>
 
