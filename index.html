@@ -54,8 +54,10 @@
         but you can also set a minimum and a maximum value, or just click one of the roll buttons.
     </p>
     <p>
+        <form onsubmit="roll(document.getElementById('string').value); return false;">
         string: <input type="text" id="string" value="2d6"/>
         <input type="button" value="roll" onclick="roll(document.getElementById('string').value)"/>
+        </form>
     </p>
     <p>
         minimum value: <input type="number" id="min" min="0" max="999" value="1" size="3" maxlength="3"/> 
