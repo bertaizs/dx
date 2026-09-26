@@ -6,7 +6,19 @@ class Dice {
     log_rolls: true,
   }
 
-  static regex = /([+-]?)(\d*)[dDkK](\d+)([+-]?\d+|)(.*$)/
+  //                    prefix
+  //                           # of dice
+  //                                D
+  //                                      type of dice
+  //              OR
+  //                                            +- constant
+  //                                                      whatever remains
+  static regex = /^\s*(([+-]?)(\d*)[dDkK](\d+)|([+-]?\d+))(.*$)/
+  
+  // static regex = /^\s*(([+-]?)(\d*)[dDkK](\d+))|([+-]?\d+|)(.*$)/
+  // static regex = /((al.*ma)|(k.*te))(.*)/
+  // static regex = /^\s*(([+-]?)(\d*)[dDkK](\d+)|([+-]?\d+|))(.*$)/
+//  static regex = /([+-]?)(\d*)[dDkK](\d+)([+-]?\d+|)(.*$)/
   
   // this is going to be our random source; returns a float value between 0 and 1
   static random() {
@@ -20,23 +32,27 @@ class Dice {
 
   // parses a string to identify a dice roll
   // example "foo +2d6-2 bar" returns 
-  parse(s) { 
+
+  parse(s) {
     let m = s.match(Dice.regex)
     if(m) {
       let t = {}
-      t.prefix = (m[1]!='-' ? 1 : -1)
-      t.n = (m[2]!='' ? Number(m[2]) : 1)
-      t.d = Number(m[3])
-      t.constant = Number(m[4])
-      if( isNaN(t.constant) ) t.constant = 0
-      
-      Dice.options.log_parsing && console.log('rest:', m[5])
-      // console.log('rest: ', m[5])
-      return [t].concat(this.parse(m[5]))
-    } else
-      return []
+      if( m[2]!=undefined ) {
+        Dice.options.log_parsing && console.log('match: dice roll', m)
+        t.prefix = (m[2]!='-' ? 1 : -1)
+        t.n_of_dice = (m[3]!='' ? Number(m[3]) : 1)
+        t.dice_type = Number(m[4])
+      } else {
+        Dice.options.log_parsing && console.log('match: constant', m)
+        t.constant = Number(m[5])
+      }
+      Dice.options.log_parsing && console.log('t', t)
+      return [t].concat(this.parse(m[6]))
+    }
+    Dice.options.log_parsing && console.log('no match!')
+    return []
   }
-  
+    
   constructor(param) {
     this.data = []
     this.last_roll = undefined
@@ -50,20 +66,25 @@ class Dice {
     Dice.options.log_data && console.log('data:', this.data)
   }
 
-  // p: die rolls will be added (1) or subtracted (-1)
-  // n: number of dice
-  // d: number of sides on each dice
-  // c: add constant
+  // t.prefix: die rolls will be added (1) or subtracted (-1)
+  // t.n_of_dice: number of dice
+  // t.dice_type: number of sides on each dice
+  // t.constant: add constant
   // example: n=2, d: 6, c=3
   // rolls with 2 6-sided dice and adds 3 to the result
-  roll_ndc(pref, n, d, c) {
+  roll_t(t) {
+    t.constant ??= 0
+    t.prefix ??= 1
+    t.n_of_dice ??= 0
+    t.dice_type ??= 0
+
     let sum = 0
-    for( let i=0; i<n; i++ ) {
-      let this_die = Dice.d(d)
+    for( let i=0; i<t.n_of_dice; i++ ) {
+      let this_die = Dice.d(t.dice_type)
       this.rolls.push(this_die)
       sum += this_die
     }
-    sum = pref*sum + c
+    sum = t.prefix*sum + t.constant
     return sum
   }
   
@@ -71,10 +92,9 @@ class Dice {
     this.rolls = []
     let sum = 0
     for(let i=0; i<this.data.length; i++)
-      sum += this.roll_ndc(this.data[i].prefix, this.data[i].n, this.data[i].d, this.data[i].constant)
+      sum += this.roll_t(this.data[i])
 
-    Dice.options.log_rolls && console.log('rolls:', this.rolls)
-    
+    Dice.options.log_rolls && console.log('rolls:', this.rolls)    
     this.last_roll = sum
     return this.last_roll
   }
