@@ -5,6 +5,8 @@ class Dice {
     log_parsing: false,
     log_rolls: true,
   }
+
+  static regex = /([+-]?)(\d*)[dDkK](\d+)([+-]?\d+|)(.*$)/
   
   // this is going to be our random source; returns a float value between 0 and 1
   static random() {
@@ -19,7 +21,7 @@ class Dice {
   // parses a string to identify a dice roll
   // example "foo +2d6-2 bar" returns 
   parse(s) { 
-    let m = s.match(/([+-]?)(\d*)[dDkK](\d+)([+-]?\d+|)(.*$)/)
+    let m = s.match(Dice.regex)
     if(m) {
       let t = {}
       t.prefix = (m[1]!='-' ? 1 : -1)

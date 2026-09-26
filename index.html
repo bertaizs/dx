@@ -33,8 +33,8 @@
         <input type="button" value="roll" onclick="roll(document.getElementById('string').value)"/>
     </p>
     <p>
-        minimal value: <input type="text" id="min" value="1"/> 
-        maximum value: <input type="text" id="max" value="6"/> 
+        minimum value: <input type="number" id="min" min="0" max="999" value="1" size="3" maxlength="3"/> 
+        maximum value: <input type="number" id="max" min="1" max="999" value="6" size="3" maxlength="3"/> 
         <input type="button" value="roll" onclick="roll('d'+(document.getElementById('max').value-document.getElementById('min').value+1)+'+'+(document.getElementById('min').value-1))"/>
     </p>
     <p>
